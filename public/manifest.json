@@ -1,5 +1,6 @@
-{"manifest_version":3,"name":"Nova New Tab","version":"1.0.0","description":"A customizable new tab dashboard with templates, shortcuts, notes, tasks and more.",
+{"manifest_version":3,"name":"Nova New Tab","version":"1.0.0","description":"A customizable productivity dashboard for your Chrome New Tab.",
 "chrome_url_overrides":{"newtab":"index.html"},
 "permissions":["storage","unlimitedStorage","bookmarks","history"],
-"host_permissions":["https://api.open-meteo.com/*","https://geocoding-api.open-meteo.com/*","https://api.rss2json.com/*"],
+"host_permissions":["https://api.open-meteo.com/*","https://geocoding-api.open-meteo.com/*","https://api.rss2json.com/*","https://www.google.com/*"],
+"content_security_policy":{"extension_pages":"script-src 'self'; object-src 'self';"},
 "icons":{"16":"icon16.png","48":"icon48.png","128":"icon128.png"}}

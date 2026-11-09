@@ -112,13 +112,14 @@ export function NewsPanel() {
 
 /* ---------- History ---------- */
 export function HistoryPanel() {
-  const [items, setItems] = useState<{ title: string; url: string }[]>([]); const [loading, setLoading] = useState(true);
+  const [items, setItems] = useState<{ title: string; url: string }[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(false);
   useEffect(() => {
     if (!inExt()) { setLoading(false); return; }
-    chrome.history.search({ text: '', maxResults: 60, startTime: Date.now() - 14 * 864e5 }).then(r => { const seen = new Set<string>(); setItems(r.filter(x => x.url && !seen.has(x.url) && seen.add(x.url)).slice(0, 40).map(x => ({ title: x.title || x.url!, url: x.url! }))); }).catch(() => undefined).finally(() => setLoading(false));
+    chrome.history.search({ text: '', maxResults: 60, startTime: Date.now() - 14 * 864e5 }).then(r => { const seen = new Set<string>(); setItems(r.filter(x => x.url && !seen.has(x.url) && seen.add(x.url)).slice(0, 40).map(x => ({ title: x.title || x.url!, url: x.url! }))); }).catch(e => { console.error('Could not read browser history.', e); setError(true); }).finally(() => setLoading(false));
   }, []);
   if (loading) return <p className="muted py-8 text-center text-sm">Loading…</p>;
   if (!inExt()) return <Empty icon={<Hist size={28} />} title="History is available in the extension" hint="Install the built extension to see recently visited sites." />;
+  if (error) return <Empty icon={<Hist size={28} />} title="Could not access browsing history" hint="Check that Nova New Tab has the History permission in chrome://extensions." />;
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between"><p className="muted text-xs">Last 14 days</p>{items.length > 0 && <button className="btn" onClick={() => setItems([])}>Clear list</button>}</div>
